@@ -125,13 +125,22 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Docs settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Myntra Ecommerce API',
+    'DESCRIPTION': 'An Ecommerce API created using Mynta Dataset',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': True,
+    # OTHER SETTINGS
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 50
+    'PAGE_SIZE': 50,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # Static files (CSS, JavaScript, Images)
