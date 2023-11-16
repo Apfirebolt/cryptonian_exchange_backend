@@ -25,6 +25,10 @@ class ListItemApiView(ListAPIView):
 
     def get_queryset(self):
         queryset = Item.objects.all()
+        # Filter by price greater than
+        price = self.request.query_params.get('price', None)
+        if price is not None:
+            queryset = queryset.filter(price__gte=price)
         return queryset
 
 
