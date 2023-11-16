@@ -1,9 +1,9 @@
 from rest_framework.generics import ListAPIView, CreateAPIView
-from . serializers import ListCustomUserSerializer, CustomUserSerializer, CustomTokenObtainPairSerializer
+from . serializers import ListCustomUserSerializer, CustomUserSerializer, CustomTokenObtainPairSerializer, ListItemsSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
-from api.models import CustomUser
+from api.models import CustomUser, Item
 
 
 class CreateCustomUserApiView(CreateAPIView):
@@ -18,5 +18,15 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class ListCustomUsersApiView(ListAPIView):
     serializer_class = ListCustomUserSerializer
     queryset = CustomUser.objects.all()
+
+
+class ListItemApiView(ListAPIView):
+    serializer_class = ListItemsSerializer
+    queryset = Item.objects.all()
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        return queryset
 
 
