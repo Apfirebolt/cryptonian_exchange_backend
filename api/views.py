@@ -23,7 +23,6 @@ class ListCustomUsersApiView(ListAPIView):
 class ListItemApiView(ListAPIView):
     serializer_class = ListItemsSerializer
     queryset = Item.objects.all()
-    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         queryset = Item.objects.all()
