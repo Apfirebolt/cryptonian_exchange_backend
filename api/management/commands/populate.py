@@ -18,7 +18,6 @@ class Command(BaseCommand):
                     product_id=row[0],
                     title=row[1],
                     link=row[10],
-                    body=row[2],
                     price=row[4],
                     mrp=row[5],
                     brand=row[9],

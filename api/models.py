@@ -47,7 +47,6 @@ class Item(models.Model):
     product_id = models.CharField("Product Id", max_length=100, blank=True, null=True)
     title = models.CharField("Title", max_length=100, blank=True, null=True)
     link = models.CharField("Link", max_length=100, blank=True, null=True)
-    body = models.TextField("Body", blank=True, null=True)
     price = models.IntegerField("Price", blank=True, null=True)
     mrp = models.IntegerField("MRP", blank=True, null=True)
     brand = models.CharField("Brand", max_length=100, blank=True, null=True)
