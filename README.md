@@ -5,7 +5,7 @@
 
 # Ecommerce API created using Myntra dataset
 
-This simple web application assists users sync with the placement preparation process with various features it has. Contains API for user authentication, adding companies to prepare for, interviews and upload resumes.
+This is an Ecommerce API which I created using a dataset with data taken from https://myntra.com which is one of the most popular online clothing stores in India.
 
 http://localhost:8000/api-docs/
 
@@ -28,12 +28,39 @@ The API docs can be viewed using the above link. Swagger is used to generate API
 
 ## Features 
 
-Application aims to help professionals/students to keep track of interview preparation for companies. They can login, add questions, 
-interview dates, applications of companies to target, resume uploading and more features are included in the app for the time being.
+Application has around 10K entries for clothing related products coming from a dataset I retrieved from Kaggle.com
+For feeding the data into the database, Management commands are used.
+
+```
+python manage.py populate
+python manage.py clear
+```
+
+Populate command reads the csv file and creates an item model for each row saving it in the database. Clear command is as the name suggests clears the database in case required in any case.
+
+The initial data was kind of large so I had to condense it by only picking the first 10k entries from the csv file. It was done using the pandas library.
+
+```
+import pandas as pd
+
+def condense_data():
+
+    # Read data from csv file
+    df = pd.read_csv('data/myntra.csv')
+
+    # Read only first 5k enties and save it in a new csv file
+
+    df = df.head(5000)
+    df.to_csv('data/myntra_condensed.csv')
+
+
+condense_data()
+
+```
 
 ## Updates
 
-Any future updates in the API would be added here.
+React frontend to be added in future.
 
 ## Authors
 
@@ -45,5 +72,14 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Screenshots
 
-No screenshots as of now, would be added in the future.
+## Screenshots
+
+Swagger Documentation 
+
+![Screenshot 1](screenshots/screenshot1.png)
+
+REST FRAEMWORK view of the items page.
+
+![Screenshot 2](screenshots/screenshot2.png)
+
 
