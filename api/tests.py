@@ -1,5 +1,9 @@
 from django.test import TestCase
+from rest_framework.test import APIClient, APITestCase
+from rest_framework import status
+from django.urls import reverse
 from django.contrib.auth import get_user_model
+from api.serializers import ListItemsSerializer
 from . models import Item
 
 
@@ -25,6 +29,21 @@ class CustomUserTests(TestCase):
         self.assertTrue(admin_user.is_active)
         self.assertTrue(admin_user.is_staff)
         self.assertTrue(admin_user.is_superuser)
+
+    
+    def test_retrieve_items(self):
+
+        res = self.client.get(reverse('api:list-items'))
+
+        companies = Item.objects.all().order_by('-id')
+        serializer = ListItemsSerializer(companies, many=True)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+
+    
+    
+
+
 
 
 
