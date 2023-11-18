@@ -92,6 +92,23 @@ DATABASES = {
     }
 }
 
+# MySQL database connection
+
+# ...
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'myntra',
+#         'USER': 'root',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',   # Or the IP Address where your MySQL server is hosted
+#         'PORT': '3306',        # Default MySQL port
+#     }
+# }
+
+# ...
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
