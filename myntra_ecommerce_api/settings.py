@@ -84,11 +84,11 @@ AUTH_USER_MODEL = "api.CustomUser"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myntra',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'pass123',
+        'PASSWORD': 'postgrespw',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '5432',
+        'PORT': '32768',
     }
 }
 
@@ -101,7 +101,7 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'myntra',
 #         'USER': 'root',
-#         'PASSWORD': 'password',
+#         'PASSWORD': 'my-secret-pw',
 #         'HOST': 'localhost',   # Or the IP Address where your MySQL server is hosted
 #         'PORT': '3306',        # Default MySQL port
 #     }
