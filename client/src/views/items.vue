@@ -4,22 +4,19 @@ import { onMounted, computed, ref } from 'vue';
 
 const items = ref([])
 const searchText = ref('')
+const startIndex = ref(0)
+const selectedItems = ref([])
+const currentPage = ref(1)
+const itemsPerPage = 5
 const loading = ref(false)
+const pages = ref(0)
+const pageWindow = ref([])
+
 
 onMounted(async () => {
-
-    const { data } = await axios.get('http://localhost:8000/api/items')
-    items.value = data.results
-    console.log(items.value)
+  const { data } = await axios.get('http://localhost:8000/api/items')
+  items.value = data.results
 })
-
-const searchItem = async () => {
-    // loading.value = true
-    // const { data } = await axios.get(`http://localhost:8000/api/items?search=${searchText.value}`)
-    // items.value = data.results
-    // loading.value = false
-    console.log('Called search item ', searchText.value)
-}
 
 // const filteredItems = computed(() => {
 //     return items.value.filter(item => {
@@ -29,24 +26,60 @@ const searchItem = async () => {
 
 // filter based on regex
 const filteredItems = computed(() => {
-  
-    let firstCharacter = searchText.value.substring(0, 1)
-    let lastCharacter = searchText.value.substring(searchText.value.length - 1, searchText.value.length)
-    // regex match first and last character
-    console.log(firstCharacter, lastCharacter)
-    const regex = new RegExp(`^${firstCharacter}.*${lastCharacter}$`, 'i')
-    
-    // const regex = new RegExp(searchText.value, 'i')
-    return items.value.filter(item => {
-      return item.title.match(regex)
-    })
+  const regex = new RegExp(searchText.value, 'i')
+  let allItems = items.value.filter(item => {
+    return regex.test(item.title)
+  })
+  pages.value = Math.ceil(allItems.length / itemsPerPage)
+
+  for(let i = 1; i <= 5; i++) {
+    pageWindow.value.push(i)
+  }
+  return allItems;
 })
+
+const changedMe = (e) => {
+    if (e.target.checked) {
+        // get the value of the checkbox
+        let selectedItem = items.value.find(item => item.id === parseInt(e.target.value))
+        selectedItems.value.push(selectedItem)
+    } else {
+        // remove the item from the selectedItems
+        let selectedItem = selectedItems.value.find(item => item.id === parseInt(e.target.value))
+        selectedItems.value.splice(selectedItems.value.indexOf(selectedItem), 1)
+    }
+    console.log(selectedItems.value)
+}
+
+const goToNextPage = () => {
+    // left rotate by 1 place
+
+    // rotate the pageWindow by 1 place
+    const arr = pageWindow.value;
+
+    // Rotate the array to the left by 1 place
+    const firstElement = arr.shift();
+    arr.push(firstElement);
+
+    console.log(arr); // Output: [2, 3, 4, 5, 1]
+    startIndex.value += 20
+    console.log('Next page ..', pageWindow.value)
+    pageWindow.value = []
+}
+
+const goToPreviousPage = () => {
+    pageWindow.value = pageWindow.value.map(page => page - 1)
+    startIndex.value -= 20
+    console.log('Previous page ..', pageWindow.value)
+    pageWindow.value = []
+}
 
 </script>
 
 <template>
   <div class="container mx-auto bg-red-700 text-white px-3 py-2">
     <div class="flex flex-row">
+      {{ pageWindow }}
       <input type="text" v-model="searchText" class="border-2 border-gray-300 w-2/3 mr-4 bg-green-700 h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none" placeholder="Search" />
       <button @click="searchItem" class="bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
         Search
@@ -105,13 +138,21 @@ const filteredItems = computed(() => {
                   {{ item.rating }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                  <input type="checkbox" @change="changedMe" class="form-checkbox h-5 w-5 text-green-500" :value="item.id" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+    </div>
+    <div>
+      <button @click="goToPreviousPage" class="bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
+        Previous
+      </button>
+      <button @click="goToNextPage" class="bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
+        Next
+      </button>
     </div>
   </div>
 </template>
