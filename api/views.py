@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from . serializers import ListCustomUserSerializer, CustomUserSerializer, CustomTokenObtainPairSerializer, ListItemsSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
@@ -38,5 +38,13 @@ class ListItemApiView(ListAPIView):
         if price is not None:
             queryset = queryset.filter(price__gte=price)
         return queryset
+    
+
+class DetailItemApiView(RetrieveAPIView):
+    serializer_class = ListItemsSerializer
+    queryset = Item.objects.all()
+    lookup_field = 'id'
+
+
 
 

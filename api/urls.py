@@ -1,5 +1,5 @@
 from django.urls import path
-from . views import ListCustomUsersApiView, CreateCustomUserApiView, ListItemApiView
+from . views import ListCustomUsersApiView, CreateCustomUserApiView, ListItemApiView, DetailItemApiView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -11,4 +11,5 @@ urlpatterns = [
     path('refresh', TokenRefreshView.as_view(), name='refresh'),
     path('users', ListCustomUsersApiView.as_view(), name='list-users'),
     path('items', ListItemApiView.as_view(), name='list-items'),
+    path('items/<int:id>', DetailItemApiView.as_view(), name='detail-item'),
 ]
