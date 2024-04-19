@@ -70,6 +70,12 @@ React frontend to be added in future.
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
+```
+docker-compose run --rm web python manage.py populate
+
+docker-compose build --no-cache
+```
+
 ## Screenshots
 
 ## Screenshots
