@@ -11,6 +11,7 @@ services:
 
   db:
     image: postgres:latest
+    container_name: myntra_postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: myntra  # Set database name

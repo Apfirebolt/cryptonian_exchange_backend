@@ -7,6 +7,9 @@ WORKDIR /usr/src/app
 # Update package lists (optional, depending on your base image)
 RUN apt-get update && apt-get upgrade -y  # Update package lists for Debian/Ubuntu-based images
 
+# A command to see what's inside the container
+RUN pip install --upgrade pip
+COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copy your Django project code

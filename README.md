@@ -74,6 +74,21 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 docker-compose run --rm web python manage.py populate
 
 docker-compose build --no-cache
+
+docker run -d \
+  -p 5173:5432 \
+  --name my-postgres \
+  -e POSTGRES_DB=myntra \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=pass123 \
+  postgres:latest
+
+
+docker-compose up
+```
+
+```
+docker-compose down -v
 ```
 
 ## Screenshots
