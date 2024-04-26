@@ -62,6 +62,47 @@ condense_data()
 
 React frontend to be added in future.
 
+### Added Support for MySQL
+
+Install pymysql library
+
+```
+pip install pymysql
+```
+
+Import it in settings.py file
+
+```
+import os
+from pathlib import Path
+import pymysql
+pymysql.install_as_MySQLdb()
+
+...
+```
+
+Database configuration
+
+```
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'myntra',
+        'USER': 'root',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',   # Or the IP Address where your MySQL server is hosted
+        'PORT': '3306',        # Default MySQL port
+    }
+}
+```
+
+Run Migrations and populate data from the dataset.
+
+```
+python manage.py migrate
+python manage.py populate
+```
+
 ## Authors
 
 * **Amit Prafulla (APFirebolt)** - (http://apgiiit.com/)

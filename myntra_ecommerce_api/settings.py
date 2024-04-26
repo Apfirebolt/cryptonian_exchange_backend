@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+import pymysql
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,31 +88,31 @@ AUTH_USER_MODEL = "api.CustomUser"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myntra',
-        'USER': 'postgres',
-        'PASSWORD': 'pass123',
-        'HOST': 'myntra_postgres',   # Or an IP Address that your DB is hosted on
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'myntra',
+#         'USER': 'postgres',
+#         'PASSWORD': 'pass123',
+#         'HOST': 'myntra_postgres',   # Or an IP Address that your DB is hosted on
+#         'PORT': '5432',
+#     }
+# }
 
 # MySQL database connection
 
 # ...
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'myntra',
-#         'USER': 'root',
-#         'PASSWORD': 'my-secret-pw',
-#         'HOST': 'localhost',   # Or the IP Address where your MySQL server is hosted
-#         'PORT': '3306',        # Default MySQL port
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'myntra',
+        'USER': 'root',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',   # Or the IP Address where your MySQL server is hosted
+        'PORT': '3306',        # Default MySQL port
+    }
+}
 
 # ...
 
