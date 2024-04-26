@@ -103,6 +103,15 @@ python manage.py migrate
 python manage.py populate
 ```
 
+Taking Database Back-up
+
+```
+python manage.py db_backup [--filename <filename>] [--database <database_name>]
+
+python manage.py db_backup --filename myntra_backup.sql --database myntra
+
+```
+
 ## Authors
 
 * **Amit Prafulla (APFirebolt)** - (http://apgiiit.com/)
