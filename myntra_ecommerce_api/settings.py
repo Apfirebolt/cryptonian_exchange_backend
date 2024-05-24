@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
-import pymysql
-pymysql.install_as_MySQLdb()
+# import pymysql
+# pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -103,14 +103,26 @@ AUTH_USER_MODEL = "api.CustomUser"
 
 # ...
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'myntra',
+#         'USER': 'root',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',   # Or the IP Address where your MySQL server is hosted
+#         'PORT': '3306',        # Default MySQL port
+#     }
+# }
+
+# Running inside a Docker container, but trying to connect to the database on the host machine, this approach did not work
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'myntra',
-        'USER': 'root',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',   # Or the IP Address where your MySQL server is hosted
-        'PORT': '3306',        # Default MySQL port
+        'USER': 'postgres',
+        'PASSWORD': 'pass123',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '5432',
     }
 }
 
@@ -162,6 +174,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAUL_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/min',
+        'user': '10/min',
+    },
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 50,

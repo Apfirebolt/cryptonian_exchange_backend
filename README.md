@@ -112,6 +112,30 @@ python manage.py db_backup --filename myntra_backup.sql --database myntra
 
 ```
 
+## API Throttling
+
+API throttling is a concept of limiting the user access to a specific number based on the privileges of the user. In this application we allow logged in users to 10 requests/min and anonymous users to 5 req/min.
+
+```
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAUL_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/min',
+        'user': '10/min',
+    },
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 50,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+```
+
 ## Authors
 
 * **Amit Prafulla (APFirebolt)** - (http://apgiiit.com/)
