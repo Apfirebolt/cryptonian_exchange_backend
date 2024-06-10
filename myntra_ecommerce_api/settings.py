@@ -161,6 +161,20 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Redis cache
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "KEY_PREFIX": "myntra_ecommerce_api"
+        }
+    }
+}
+
+
 # Docs settings
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Myntra Ecommerce API',

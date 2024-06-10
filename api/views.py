@@ -2,6 +2,8 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from . serializers import ListCustomUserSerializer, CustomUserSerializer, CustomTokenObtainPairSerializer, ListItemsSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -34,18 +36,22 @@ class ListItemApiView(ListAPIView):
     ordering_fields = ['price']
     search_fields = ['title', 'brand']
 
+    @method_decorator(cache_page(60 * 60)) 
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+    
     def get_queryset(self):
         queryset = Item.objects.all()
         # Filter by price greater than
-        price = self.request.query_params.get('price', None)
+        # price = self.request.query_params.get('price', None)
 
-        price_gt = queryset.filter(price__gt=10000)
-        brand = queryset.filter(brand='MANDARINA DUCK')
+        # price_gt = queryset.filter(price__gt=10000)
+        # brand = queryset.filter(brand='MANDARINA DUCK')
 
-        # return combined queryset
-        return price_gt.intersection(brand)
-        if price is not None:
-            queryset = queryset.filter(price__gte=price)
+        # # return combined queryset
+        # return price_gt.intersection(brand)
+        # if price is not None:
+        #     queryset = queryset.filter(price__gte=price)
         return queryset
     
 
