@@ -1,17 +1,15 @@
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
-from rest_framework.views import APIView
-from . serializers import ListCustomUserSerializer, CustomUserSerializer, CustomTokenObtainPairSerializer, CurrencySerializer
+from . serializers import ListCustomUserSerializer, CustomUserSerializer, CustomTokenObtainPairSerializer, CurrencySerializer \
+, WalletSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from drf_spectacular.utils import extend_schema
 from users.models import CustomUser
 from rest_framework_simplejwt.tokens import RefreshToken
-from core.models import Currency
-from rest_framework.views import APIView
+from core.models import Currency, Wallet
 
 
 class CreateCustomUserApiView(CreateAPIView):
@@ -80,6 +78,42 @@ class RetrieveUpdateDestroyCurrencyApiView(RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         currency = self.get_object()
         currency.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class ListCreateWalletApiView(ListCreateAPIView):
+    serializer_class = WalletSerializer
+    queryset = Wallet.objects.all()
+    permission_classes = [IsAuthenticated]
+
+
+    # check if wallet already exists
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        currency = serializer.validated_data['currency']
+        if Wallet.objects.filter(user=user, currency=currency).exists():
+            return Response({'error': 'Wallet already exists'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+
+class RetrieveUpdateDestroyWalletApiView(RetrieveUpdateDestroyAPIView):
+    serializer_class = WalletSerializer
+    queryset = Wallet.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        wallet = self.get_object()
+        serializer = WalletSerializer(wallet)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+    def delete(self, request, *args, **kwargs):
+        wallet = self.get_object()
+        wallet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 

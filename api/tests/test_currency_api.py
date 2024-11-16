@@ -10,8 +10,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from api.serializers import CurrencySerializer
 
-CREATE_USER_URL = reverse('api:signup')
-TOKEN_URL = reverse('api:signin')
+
 CURRENCY_URL = reverse('api:currencies')
 CURRENCY_DETAIL_URL = reverse('api:currency-detail', args=[1])
 
