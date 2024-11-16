@@ -178,6 +178,29 @@ class RetrieveUpdateDestroyTransactionApiView(RetrieveUpdateDestroyAPIView):
         transaction = self.get_object()
         transaction.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class ListCreateOrderApiView(ListCreateAPIView):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+    permission_classes = [IsAuthenticated]
+
+
+class RetrieveUpdateDestroyOrderApiView(RetrieveUpdateDestroyAPIView):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        order = self.get_object()
+        serializer = OrderSerializer(order)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+    def delete(self, request, *args, **kwargs):
+        order = self.get_object()
+        order.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
     

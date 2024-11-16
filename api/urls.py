@@ -1,7 +1,8 @@
 from django.urls import path
 from . views import ListCustomUsersApiView, CreateCustomUserApiView, CustomTokenObtainPairView \
 , RetrieveUpdateDestroyCustomUserApiView , ListCreateCurrencyApiView, RetrieveUpdateDestroyCurrencyApiView, ListCreateWalletApiView \
-, RetrieveUpdateDestroyWalletApiView, ListCreateTransactionApiView, RetrieveUpdateDestroyTransactionApiView
+, RetrieveUpdateDestroyWalletApiView, ListCreateTransactionApiView, RetrieveUpdateDestroyTransactionApiView, ListCreateOrderApiView \
+, RetrieveUpdateDestroyOrderApiView
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
@@ -19,4 +20,6 @@ urlpatterns = [
     path('wallets/<str:pk>', RetrieveUpdateDestroyWalletApiView.as_view(), name='wallet-detail'),
     path('transactions', ListCreateTransactionApiView.as_view(), name='transactions'),
     path('transactions/<str:pk>', RetrieveUpdateDestroyTransactionApiView.as_view(), name='transaction-detail'),
+    path('orders', ListCreateOrderApiView.as_view(), name='orders'),
+    path('orders/<str:pk>', RetrieveUpdateDestroyOrderApiView.as_view(), name='order-detail'),
 ]

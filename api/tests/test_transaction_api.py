@@ -26,17 +26,9 @@ def create_wallet(**params):
     """Create and return a new wallet."""
     return Wallet.objects.create(**params)
 
-def detail_TRANSACTION_url(pk):
+def detail_transaction_url(pk):
     """Create and return a transaction detail URL."""
     return reverse('api:transaction-detail', args=[pk])
-
-# class Transaction(models.Model):
-#     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-#     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
-#     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-#     transaction_type = models.CharField("Transaction Type", max_length=10)
-#     amount = models.DecimalField("Amount", max_digits=20, decimal_places=10)
-#     created_at = models.DateTimeField("Created At", auto_now_add=True)
 
 
 class PublicTransactionApiTests(TestCase):
@@ -76,7 +68,7 @@ class PrivateTransactionApiTests(TestCase):
         serializer = TransactionSerializer(transactions, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        
+
 
     def test_delete_transaction(self):
         """Test deleting a transaction."""
@@ -84,7 +76,7 @@ class PrivateTransactionApiTests(TestCase):
         wallet = create_wallet(user=self.user, currency=currency, balance=1000)
         transaction = Transaction.objects.create(wallet=wallet, currency=currency, transaction_type='deposit', amount=1000)
 
-        res = self.client.delete(detail_TRANSACTION_url(transaction.id))
+        res = self.client.delete(detail_transaction_url(transaction.id))
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
 
 
@@ -95,7 +87,7 @@ class PrivateTransactionApiTests(TestCase):
         transaction = Transaction.objects.create(wallet=wallet, currency=currency, transaction_type='deposit', amount=1000)
 
         payload = {'amount': 2000}
-        res = self.client.patch(detail_TRANSACTION_url(transaction.id), payload)
+        res = self.client.patch(detail_transaction_url(transaction.id), payload)
 
         transaction.refresh_from_db()
         self.assertEqual(transaction.amount, payload['amount'])
@@ -108,7 +100,7 @@ class PrivateTransactionApiTests(TestCase):
         wallet = create_wallet(user=self.user, currency=currency, balance=1000)
         transaction = Transaction.objects.create(wallet=wallet, currency=currency, transaction_type='deposit', amount=1000)
 
-        res = self.client.get(detail_TRANSACTION_url(transaction.id))
+        res = self.client.get(detail_transaction_url(transaction.id))
 
         serializer = TransactionSerializer(transaction)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
