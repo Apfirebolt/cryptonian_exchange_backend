@@ -55,6 +55,17 @@ class PrivateTransactionApiTests(TestCase):
         self.client.force_authenticate(self.user)
 
     
+    def test_create_transaction(self):
+        """Test creating a new transaction."""
+        currency = create_currency(name='US Dollar', symbol='$', code='USD', is_crypto=False)
+        wallet = create_wallet(user=self.user, currency=currency, balance=1000)
+        payload = {'wallet': wallet.id, 'currency': currency.id, 'transaction_type': 'deposit', 'amount': 1000}
+
+        res = self.client.post(TRANSACTION_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+    
     def test_retrieve_transactions(self):
         """Test retrieving a list of transactions."""
         currency = create_currency(name='US Dollar', symbol='$', code='USD', is_crypto=False)

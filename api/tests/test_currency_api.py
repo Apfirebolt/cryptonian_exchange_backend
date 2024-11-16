@@ -47,6 +47,15 @@ class PrivateCurrencyApiTests(TestCase):
         self.user = create_user(email='user@example.com', password='test123', username='Test Name', is_staff=True, is_superuser=True)
         self.client.force_authenticate(self.user)
 
+    def test_create_currency(self):
+        """Test creating a new currency."""
+        payload = {'name': 'US Dollar', 'symbol': '$', 'code': 'USD', 'is_crypto': False}
+
+        res = self.client.post(CURRENCY_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        
+
     def test_retrieve_currencies(self):
         """Test retrieving a list of currencies."""
         Currency.objects.create(name='US Dollar', symbol='$', code='USD', is_crypto=False)

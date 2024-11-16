@@ -98,4 +98,29 @@ class PrivateWalletApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
+
+    def test_wallet_create(self):
+        """Test creating a wallet."""
+        currency = create_currency(name='US Dollar', symbol='$', code='USD', is_crypto=False)
+        payload = {'user': self.user.id, 'currency': currency.id, 'balance': 1000}
+        res = self.client.post(WALLET_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        
+
+    def test_user_cannot_update_other_user_wallet(self):
+        """Test that user cannot update other user wallet."""
+        currency = create_currency(name='US Dollar', symbol='$', code='USD', is_crypto=False)
+        user = create_user(email='another_user@example.com', password='test123', username='Another Name', is_staff=True, is_superuser=False)
+
+        wallet = Wallet.objects.create(user=user, currency=currency, balance=1000)
+
+        payload = {'balance': 2000}
+        res = self.client.patch(detail_wallet_url(wallet.id), payload)
+
+        wallet.refresh_from_db()
+        self.assertNotEqual(wallet.balance, payload['balance'])
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        
+
     

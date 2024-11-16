@@ -6,9 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from drf_spectacular.utils import extend_schema
+from api.permissions import IsOwner
 from users.models import CustomUser
-from rest_framework_simplejwt.tokens import RefreshToken
 from core.models import Currency, Wallet, Order, Transaction
 
 
@@ -103,7 +102,7 @@ class ListCreateWalletApiView(ListCreateAPIView):
 class RetrieveUpdateDestroyWalletApiView(RetrieveUpdateDestroyAPIView):
     serializer_class = WalletSerializer
     queryset = Wallet.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner]
 
     def get(self, request, *args, **kwargs):
         wallet = self.get_object()
