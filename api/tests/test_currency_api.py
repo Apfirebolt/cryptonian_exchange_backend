@@ -39,7 +39,7 @@ class PublicCurrencyApiTests(TestCase):
 
 
 
-class PrivateGroupApiTests(TestCase):
+class PrivateCurrencyApiTests(TestCase):
     """Test authenticated API requests."""
 
     def setUp(self):

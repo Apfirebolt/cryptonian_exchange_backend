@@ -13,14 +13,6 @@ from api.serializers import WalletSerializer
 WALLET_URL = reverse('api:wallets')
 WALLET_DETAIL_URL = reverse('api:wallet-detail', args=[1])
 
-# class Wallet(models.Model):
-#     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-#     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
-#     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-#     balance = models.DecimalField("Balance", max_digits=20, decimal_places=10)
-#     created_at = models.DateTimeField("Created At", auto_now_add=True)
-#     updated_at = models.DateTimeField("Updated At", auto_now=True)
-
 
 def create_user(**params):
     """Create and return a new user."""
@@ -50,7 +42,7 @@ class PublicWalletApiTests(TestCase):
 
 
 
-class PrivateGroupApiTests(TestCase):
+class PrivateWalletApiTests(TestCase):
     """Test authenticated API requests."""
 
     def setUp(self):
