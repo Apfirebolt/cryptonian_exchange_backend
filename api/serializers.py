@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from users.models import CustomUser
-from core.models import Currency, Wallet
+from core.models import Currency, Wallet, Order, Transaction
 from django.dispatch import Signal
 # use @extend_schema_field to add custom description to the field
 from drf_spectacular.utils import extend_schema_field
@@ -76,4 +76,18 @@ class WalletSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Wallet
+        fields = '__all__'
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Transaction
         fields = '__all__'
