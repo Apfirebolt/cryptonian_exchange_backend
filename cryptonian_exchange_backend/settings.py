@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_filters',
 
-    'api',
+    'users',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cryptonian_exchange_backend.wsgi.application'
 
-AUTH_USER_MODEL = "api.CustomUser"
+AUTH_USER_MODEL = "users.CustomUser"
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -90,7 +91,7 @@ AUTH_USER_MODEL = "api.CustomUser"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myntra_copy',
+        'NAME': 'cryptonian_exchange',
         'USER': 'postgres',
         'PASSWORD': 'pass123',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on

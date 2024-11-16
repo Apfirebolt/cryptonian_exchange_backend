@@ -10,9 +10,6 @@ media
 /media
 *.sqlite3
 
-# ignore migrations
-**/migrations/
-
 # testing
 /coverage
 
