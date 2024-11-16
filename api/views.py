@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView, ListCreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from rest_framework.views import APIView
 from . serializers import ListCustomUserSerializer, CustomUserSerializer, CustomTokenObtainPairSerializer, CurrencySerializer
 from rest_framework.permissions import IsAuthenticated
@@ -8,33 +8,11 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from drf_spectacular.utils import extend_schema
-from users.models import CustomUser, AuditLog
+from users.models import CustomUser
 from rest_framework_simplejwt.tokens import RefreshToken
 from core.models import Currency
 from rest_framework.views import APIView
-from . permissions import IsOwner, IsSuperUser
 
-
-class PasswordlessLoginView(APIView):
-    permission_classes = []
-
-    def post(self, request):
-        username = request.data.get('username')
-        user = self.authenticate(username)
-
-        if user is None:
-            return Response({'error': 'Invalid username'}, status=401)
-
-        token = RefreshToken.for_user(user)
-        refresh = str(token)
-        access = str(token.access_token)
-        email = user.email
-
-        return Response({'refresh': refresh, 'access': access, 'email': email})
-
-    def authenticate(self, username):
-        # Use your custom backend logic here (defined in step 1)
-        return EmailLoginBackend().authenticate(self.request, username)
 
 class CreateCustomUserApiView(CreateAPIView):
     serializer_class = CustomUserSerializer
@@ -61,16 +39,7 @@ class RetrieveUpdateDestroyCustomUserApiView(RetrieveUpdateDestroyAPIView):
 
     def get(self, request, *args, **kwargs):
         user = self.get_object()
-        serializer = UserDataSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def put(self, request, *args, **kwargs):
-        user = self.get_object()
-        serializer = UserDataSerializer(user, data=request.data, partial=True)
-        # if exception is raised then return 400 with a detail message
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        serializer.save()
+        serializer = ListCustomUserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 
