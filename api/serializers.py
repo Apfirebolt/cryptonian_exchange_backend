@@ -1,5 +1,9 @@
 from rest_framework import serializers
-from api2.models import CustomUser, Item
+from users.models import CustomUser
+from core.models import Currency
+from django.dispatch import Signal
+# use @extend_schema_field to add custom description to the field
+from drf_spectacular.utils import extend_schema_field
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -13,11 +17,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         
         data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
         # Custom data 
-        data.update({'userData': {
-            'email': self.user.email,
-            'username': self.user.username,
-            'id': self.user.id
-        }})
+        data['username'] = self.user.username
+        data['email'] = self.user.email
+        data['id'] = self.user.id
+        data['is_admin'] = self.user.is_superuser
         return data
 
 
@@ -34,12 +37,14 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'id', 'is_staff', 'password', 'access', 'refresh',)
+        fields = ('username', 'email', 'id', 'is_staff', 'password', 'access', 'refresh', 'is_superuser',)
     
+    @extend_schema_field(serializers.CharField)
     def get_refresh(self, user):
         refresh = RefreshToken.for_user(user)
         return str(refresh)
 
+    @extend_schema_field(serializers.CharField)
     def get_access(self, user):
         refresh = RefreshToken.for_user(user)
         access = str(refresh.access_token),
@@ -56,11 +61,12 @@ class ListCustomUserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email', 'firstName', 'lastName', 'is_staff',)
+        fields = ('username', 'email', 'id', 'is_staff', 'is_superuser',)
 
 
-class ListItemsSerializer(serializers.ModelSerializer):
-    
+class CurrencySerializer(serializers.ModelSerializer):
+
+
     class Meta:
-        model = Item
+        model = Currency
         fields = '__all__'

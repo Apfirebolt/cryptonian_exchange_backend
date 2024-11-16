@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     'users',
     'core',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -150,8 +151,8 @@ CACHES = {
 
 # Docs settings
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Myntra Ecommerce API',
-    'DESCRIPTION': 'An Ecommerce API created using Mynta Dataset',
+    'TITLE': 'Cryptonian Exchange API',
+    'DESCRIPTION': 'API for Cryptonian Exchange',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': True,
     # OTHER SETTINGS
@@ -161,14 +162,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAUL_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle',
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '5/min',
-        'user': '10/min',
-    },
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 50,
